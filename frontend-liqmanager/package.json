@@ -15,8 +15,11 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
+    "@thirdweb-dev/react": "^4.1.14",
+    "@thirdweb-dev/sdk": "^4.0.21",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
+    "ethers": "^5.7.2",
     "lucide-react": "0.105.0-alpha.4",
     "next": "^13.4.8",
     "next-themes": "^0.2.1",
