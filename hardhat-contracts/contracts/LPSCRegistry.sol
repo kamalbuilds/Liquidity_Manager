@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
 contract LPSCRegistry {
     // Source Chain (Ethereum Sepolia) Config:
     uint64 constant SEPOLIA_CHAIN_SELECTOR = 16015286601757825753;
