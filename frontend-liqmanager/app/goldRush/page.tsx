@@ -1,4 +1,5 @@
 "use client";
+import * as React from "react";
 import "@covalenthq/goldrush-kit/styles.css";
 import {
     GoldRushProvider,
@@ -7,8 +8,17 @@ import {
     TokenTransfersListView,
     AddressActivityListView,
 } from "@covalenthq/goldrush-kit";
+import { DeployLPSC } from "@/components/deploy/deploylpsc";
 
 export default function GoldRushExample() {
+
+    const func = async () => {
+        const ans = await DeployLPSC({ routeraddr: 'a', vaultaddr: 'b' });
+        console.log("Ans", ans);
+    }
+
+    func();
+
     return (
         <main className="">
 
