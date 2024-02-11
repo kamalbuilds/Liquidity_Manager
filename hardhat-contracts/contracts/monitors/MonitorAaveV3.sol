@@ -10,11 +10,6 @@ import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-sol
 import {IPoolAaveV3} from "../interfaces/aave-v3/IPoolAaveV3.sol";
 import {Withdraw} from "../utils/Withdraw.sol";
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
 contract MonitorAaveV3 is
     AutomationCompatibleInterface,
     CCIPReceiver,
@@ -28,7 +23,7 @@ contract MonitorAaveV3 is
      * Health <1.1: Red
      * Health < 1, liquidation will occur
      *
-     * @dev Suggestion is to be at least 11000000000000000000
+     * @dev For eg 1.5 ==  1500000000000000000
      */
     uint256 immutable i_minHealthFactor;
     address immutable i_onBehalfOf;
@@ -42,7 +37,14 @@ contract MonitorAaveV3 is
     mapping(bytes32 messageId => uint256 amountToRepay) internal requested;
 
     event MessageSent(bytes32 indexed messageId);
-
+    event CheckUpkeepCalled(
+        address indexed caller,
+        bool upkeepNeeded,
+        uint256 healthFactor
+    );
+    event PerformUpkeepInitiated(address indexed caller);
+    event DebtCalculated(uint256 totalDebtBase, uint256 healthFactor);
+    event CcipMessageSent(bytes32 indexed messageId, uint256 amountNeeded);
     constructor(
         address router,
         address onBehalfOf,
@@ -64,16 +66,33 @@ contract MonitorAaveV3 is
         LinkTokenInterface(i_link).approve(i_router, type(uint256).max);
     }
 
+    /**
+     * @dev Returns the current health factor of the account specified by i_onBehalfOf.
+     */
+    function getHealthFactor() public view returns (uint256 healthFactor) {
+        (, , , , , healthFactor) = IPoolAaveV3(i_lendingPoolAddress)
+            .getUserAccountData(i_onBehalfOf);
+    }
+
+    /**
+     * @dev Override of checkUpkeep to include logic for determining if upkeep is needed based on the health factor.
+     */
     function checkUpkeep(
         bytes calldata checkData
-    ) external override returns (bool upkeepNeeded, bytes memory performData) {
+    ) public override returns (bool upkeepNeeded, bytes memory performData) {
         (, , , , , uint256 healthFactor) = IPoolAaveV3(i_lendingPoolAddress)
             .getUserAccountData(i_onBehalfOf);
-
         upkeepNeeded = healthFactor <= i_minHealthFactor && !_isCcipMessageSent;
+
+        // Emitting the event with the caller's address, the upkeepNeeded flag, and the healthFactor.
+        emit CheckUpkeepCalled(msg.sender, upkeepNeeded, healthFactor);
+
+        performData = abi.encode(healthFactor);
     }
 
     function performUpkeep(bytes calldata performData) external override {
+        emit PerformUpkeepInitiated(msg.sender); // Log the initiation of performUpkeep
+
         require(
             !_isCcipMessageSent,
             "CCIP Message already sent, waiting for a response"
@@ -89,6 +108,7 @@ contract MonitorAaveV3 is
         );
 
         uint256 amountNeeded = totalDebtBase;
+        emit DebtCalculated(totalDebtBase, healthFactor); // Log the calculated debt and health factor
 
         // Ask for funds from LPSC on the source blockchain
         Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
@@ -126,5 +146,23 @@ contract MonitorAaveV3 is
             1,
             i_onBehalfOf
         );
+    }
+
+    /**
+     * @dev Function to check if a CCIP message has been sent and is awaiting response.
+     */
+    function isCcipMessageSent() public view returns (bool) {
+        return _isCcipMessageSent;
+    }
+
+    /**
+     * @dev Function to get the amount to repay for a given messageId.
+     * @param messageId The messageId to query.
+     * @return The amount to repay associated with the messageId.
+     */
+    function getRequestedAmount(
+        bytes32 messageId
+    ) public view returns (uint256) {
+        return requested[messageId];
     }
 }

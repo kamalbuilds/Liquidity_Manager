@@ -10,9 +10,7 @@ import {LPSCRegistry} from "./LPSCRegistry.sol";
 import {LPSCVault} from "./LPSCVault.sol";
 
 /**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
+ * Liquidity Protection Contract
  */
 contract LPSC is LPSCVault, LPSCRegistry, CCIPReceiver {
     address immutable router;
