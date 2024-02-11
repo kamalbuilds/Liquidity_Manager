@@ -1,6 +1,5 @@
 "use client";
 import "@/styles/globals.css"
-// import { Metadx  ata } from "next"
 
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
@@ -8,28 +7,10 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { AvalancheTestnet, Avalanche } from '@particle-network/chains';
 import { WalletEntryPosition } from '@particle-network/auth';
 import { evmWallets } from '@particle-network/connect';
 import { ModalProvider } from '@particle-network/connect-react-ui';
-
-// export const metadata: Metadata = {
-//   title: {
-//     default: siteConfig.name,
-//     template: `%s - ${siteConfig.name}`,
-//   },
-//   description: siteConfig.description,
-//   themeColor: [
-//     { media: "(prefers-color-scheme: light)", color: "white" },
-//     { media: "(prefers-color-scheme: dark)", color: "black" },
-//   ],
-//   icons: {
-//     icon: "/favicon.ico",
-//     shortcut: "/favicon-16x16.png",
-//     apple: "/apple-touch-icon.png",
-//   },
-// }
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -50,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       defaultWalletEntryPosition: WalletEntryPosition.BR,
       supportChains: [
         Avalanche,
-        AvalancheTestnet
+        AvalancheTestnet,
       ],
       customStyle: {}, //optional: custom wallet style
     },

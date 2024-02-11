@@ -13,6 +13,12 @@ Unlock the full potential of your assets with Liquidity Manager - Your gateway t
 - **Real-Time Analytics**: Gain insights into your investments with real-time analytics and performance metrics.
 - **Social Login with Particle Auth**: Simplify your access with secure and convenient social logins powered by Particle Auth, enabling you to start managing your assets with just a few clicks.
 
+## Contracts 
+
+Chainlink Automation - https://automation.chain.link/fuji/30138675381868982937191746095730747527209720008427810930119313308116142995675
+
+
+
 ## The Problem
 In the rapidly evolving DeFi landscape, managing liquidity across multiple decentralized exchanges (DEXes) can be cumbersome and inefficient. Traditional methods often lead to suboptimal asset allocation, missed opportunities, and increased exposure to risks.
 
