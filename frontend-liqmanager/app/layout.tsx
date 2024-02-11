@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AvalancheTestnet, Avalanche } from '@particle-network/chains';
+import { AvalancheTestnet, Avalanche, } from '@particle-network/chains';
 import { WalletEntryPosition } from '@particle-network/auth';
 import { evmWallets } from '@particle-network/connect';
 import { ModalProvider } from '@particle-network/connect-react-ui';
@@ -19,9 +19,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
 
   const particleAuthOptions = {
-    projectId: 'f0ee0b90-b5cb-40dc-91f1-595138ba0e88',
-    clientKey: 'cgtRr3dUckCXCGgM2srnJiAF9hzmIcJUYjJT3x7iy',
-    appId: '0a03e7aa-c9ae-40f2-8869-f0953becd803',
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY,
+    appId: process.env.NEXT_PUBLIC_APP_ID,
     chains: [
       Avalanche,
       AvalancheTestnet
