@@ -13,6 +13,7 @@ import { WalletEntryPosition } from '@particle-network/auth';
 import { evmWallets } from '@particle-network/connect';
 import { ModalProvider } from '@particle-network/connect-react-ui';
 import { GoldRushProvider } from "@covalenthq/goldrush-kit";
+
 // export const metadata: Metadata = {
 //   title: {
 //     default: siteConfig.name,
@@ -37,9 +38,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
 
   const particleAuthOptions = {
-    projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY,
-    appId: process.env.NEXT_PUBLIC_APP_ID,
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
+    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY ||  "",
+    appId: process.env.NEXT_PUBLIC_APP_ID || "",
     chains: [
       Avalanche,
       AvalancheTestnet
