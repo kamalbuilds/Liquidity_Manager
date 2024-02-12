@@ -4,22 +4,18 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
 
-import { SiZendesk, SiGooglesheets, SiTypeform } from 'react-icons/si'
-import { RiFileExcelFill } from 'react-icons/ri'
-import { FaWhatsapp } from 'react-icons/fa'
+import { SiZendesk, SiGooglesheets, SiTypeform  } from 'react-icons/si'
 
 const integrations = [
-    { name: 'Zendesk', logo: SiZendesk },
-    { name: 'Google Sheets', logo: SiGooglesheets },
+    { name: 'ETH', logo: SiZendesk },
+    { name: 'Avalanche', logo: SiGooglesheets },
     { name: 'Typeform', logo: SiTypeform },
-    { name: 'Excel', logo: RiFileExcelFill },
-    { name: 'Whatsapp Business', logo: FaWhatsapp }
 ]
 
 export function Integrations() {
     return (
         <div>
-            <h2 className="text-lg font-bold mb-6">Connect with the tools of your choice</h2>
+            <h2 className="text-lg font-bold mb-6">Connect with the Protocols of your choice</h2>
             <div className="flex justify-center">
                 <Carousel
                     opts={{ align: 'start', loop: true }}
@@ -48,9 +44,9 @@ export function Integrations() {
             </div>
             <div className="flex justify-center mt-6">
                 <p className="text-sm text-center">
-                    Calla integrates with the tools you already use. Integrations like Zendesk and Whatsapp Business
-                    will allow Calla to directly analyze your customer conversations and provide you with real-time
-                    insights.
+                    We have integrations with popular lending protocols like AAVE, Compound that you already use.
+                    Integrations allow us to directly analyze your Health Factor and provide you with real-time
+                    insights to your Liquidity Positions.
                 </p>
             </div>
         </div>

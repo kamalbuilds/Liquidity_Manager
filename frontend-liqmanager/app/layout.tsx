@@ -1,6 +1,7 @@
 "use client";
 import "@/styles/globals.css"
-
+// import { Metadx  ata } from "next"
+import "@covalenthq/goldrush-kit/styles.css";
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
@@ -11,6 +12,23 @@ import { AvalancheTestnet, Avalanche, } from '@particle-network/chains';
 import { WalletEntryPosition } from '@particle-network/auth';
 import { evmWallets } from '@particle-network/connect';
 import { ModalProvider } from '@particle-network/connect-react-ui';
+import { GoldRushProvider } from "@covalenthq/goldrush-kit";
+// export const metadata: Metadata = {
+//   title: {
+//     default: siteConfig.name,
+//     template: `%s - ${siteConfig.name}`,
+//   },
+//   description: siteConfig.description,
+//   themeColor: [
+//     { media: "(prefers-color-scheme: light)", color: "white" },
+//     { media: "(prefers-color-scheme: dark)", color: "black" },
+//   ],
+//   icons: {
+//     icon: "/favicon.ico",
+//     shortcut: "/favicon-16x16.png",
+//     apple: "/apple-touch-icon.png",
+//   },
+// }
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -59,15 +77,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <ModalProvider options={particleAuthOptions}>
-              <>
-                <div className="relative flex min-h-screen flex-col">
-                  <SiteHeader />
-                  <div className="flex-1">{children}</div>
-                </div>
-                <TailwindIndicator />
-              </>
-            </ModalProvider>
+            <GoldRushProvider apikey="cqt_rQdDRhX8FP9gX7jB9rhBgkY46Pxq">
+              <ModalProvider options={particleAuthOptions}>
+                <>
+                  <div className="relative flex min-h-screen flex-col">
+                    <SiteHeader />
+                    <div className="flex-1">{children}</div>
+                  </div>
+                  <TailwindIndicator />
+                </>
+              </ModalProvider>
+            </GoldRushProvider>
           </ThemeProvider>
         </body>
       </html>
