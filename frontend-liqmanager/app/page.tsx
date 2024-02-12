@@ -5,10 +5,14 @@ import { buttonVariants } from "@/components/ui/button"
 
 import { ConnectButton } from "@particle-network/connect-react-ui"
 import '@particle-network/connect-react-ui/dist/index.css';
+import { HeroSection } from "@/components/Hero/page";
+import { FeaturesSection } from "@/components/Features";
 
 export default function IndexPage() {
   return (
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
+      <HeroSection />
+      <FeaturesSection />
     </section>
   )
 }
