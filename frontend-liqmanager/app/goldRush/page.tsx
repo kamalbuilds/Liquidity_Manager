@@ -19,6 +19,8 @@ export default function GoldRushExample() {
     const func = async () => {
         const ans = await DeployLPSC({ routeraddr: 'a', vaultaddr: 'b' });
         console.log("Ans", ans);
+
+        
     }
 
 
@@ -32,8 +34,10 @@ export default function GoldRushExample() {
     const effectiveAddress = userEnteredAddress || account;
 
     return (
-        <main className="">
+        <div className="">
             <Input type="text" placeholder="Enter Address to search" onChange={handleAddressChange} />
+
+            <button onClick={func}>deploy</button>
             <TokenBalancesListView
                 chain_names={[
                     "eth-mainnet",
@@ -59,6 +63,6 @@ export default function GoldRushExample() {
                     "avalanche-mainnet",
                 ]}
             />
-        </main>
+        </div>
     );
 }

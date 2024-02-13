@@ -1,6 +1,6 @@
 # Avalanche Cross-Chain Liquidity Manager
 
-**Seamlessly Manage Your Liquidity Positions Across Multiple DeXes and Chains powered by Social Login**
+**Seamlessly Manage Your Liquidity Positions Across Multiple Protocols and Chains powered by Social Login**
 
 ## Tagline
 Unlock the full potential of your assets with Liquidity Manager - Your gateway to efficient and optimized liquidity management in the DeFi space.

@@ -22,7 +22,7 @@ export const Icons = {
     </svg>
   ),
   mainlogo: () => {
-      <img src="" alt="mainlogo" />
+      <img src="https://static.particle.network/token-list/avalanche/native.png" alt="mainlogo" />
    },
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>

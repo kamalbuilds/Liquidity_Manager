@@ -6,8 +6,8 @@ export const siteConfig = {
     "Avalanche X Chain Liquidity Position Manager.",
   mainNav: [
     {
-      title: "Home",
-      href: "/",
+      title: "Dashboard",
+      href: "/dashboard",
     },
     {
       title: "Assets",
