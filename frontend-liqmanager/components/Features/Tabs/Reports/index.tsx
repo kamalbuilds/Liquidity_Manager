@@ -21,11 +21,11 @@ export function Reports() {
     return (
         <div>
             <div className="text-md font-semibold text-primary pb-4 -pt-2">
-                Calla analyses your customer feedback in realtime to provide you with actionable insights.
+                We analyses your Debt Postion in realtime to provide you with actionable insights.
             </div>
             <div className="max-w-4xl mx-auto mb-8 gap-4 flex flex-row md:grid grid-cols-2">
                 <Card className="p-6 shadow-lg">
-                    <h2 className="text-sm font-semibold text-primary">Average Sentiment</h2>
+                    <h2 className="text-sm font-semibold text-primary">Average Health Position</h2>
                     <CardContent className="-p-12">
                         <p className="mt-2 text-3xl md:text-4xl font-bold text-green-600">88.6 %</p>
                         <p className="mt-1 text-sm font-medium text-green-600">+0.05 %</p>
@@ -60,7 +60,7 @@ export function Reports() {
             <Card>
                 <CardHeader>
                     <div className="flex flex-row justify-between">
-                        <CardTitle>Customer Sentiment Over time</CardTitle>
+                        <CardTitle>Health Factor Over time</CardTitle>
                         <DateRange className="hidden md:block" />
                     </div>
                 </CardHeader>

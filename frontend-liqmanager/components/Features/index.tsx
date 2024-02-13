@@ -25,7 +25,7 @@ const tabs = [
     {
         name: 'Integrations',
         content: Integrations,
-        header: 'Connect the Tools You Already Use'
+        header: 'Connect with the Protocols and Chains You Love'
     },
     {
         name: 'Reports',
