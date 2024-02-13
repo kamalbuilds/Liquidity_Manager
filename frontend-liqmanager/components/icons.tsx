@@ -4,7 +4,8 @@ import {
   SunMedium,
   Twitter,
   type Icon as LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
+
 
 export type Icon = LucideIcon
 
@@ -20,6 +21,9 @@ export const Icons = {
       />
     </svg>
   ),
+  mainlogo: () => {
+      <img src="" alt="mainlogo" />
+   },
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

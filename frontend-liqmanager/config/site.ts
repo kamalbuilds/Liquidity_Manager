@@ -1,14 +1,18 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Avalanche Cross Chain Liquidity Manager",
+  name: "Avalanche X Chain Liquidity Positon Manager",
   description:
-    "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    "Avalanche X Chain Liquidity Position Manager.",
   mainNav: [
     {
       title: "Home",
       href: "/",
     },
+    {
+      title: "Assets",
+      href: "/goldRush",
+    }
   ],
   links: {
     twitter: "https://twitter.com/0xkamal7",

@@ -1,9 +1,8 @@
 "use client";
 import { ethers } from 'ethers';
 
-// Your contract ABI and bytecode
 import LPSC from '../../abi/LPSC.json'; // The JSON file containing ABI and bytecode
-import { useEthereum } from '@particle-network/auth-core-modal';
+import { useAccountInfo } from '@particle-network/connectkit';
 
 interface lpscargs {
   routeraddr: string,
@@ -11,11 +10,10 @@ interface lpscargs {
 }
 
 export const DeployLPSC = async (lpscconfig: lpscargs) => {
-  const { provider } = useEthereum();
-  const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
-  // Connect to the Ethereum network
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const { particleProvider } = useAccountInfo();
+// @ts-ignore
+  const ethersProvider = new ethers.providers.Web3Provider(particleProvider, "any");
 
   // Prompt user to connect their wallet
   await ethersProvider.send("eth_requestAccounts", []);
