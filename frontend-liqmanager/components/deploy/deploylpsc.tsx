@@ -9,7 +9,7 @@ interface lpscargs {
   vaultaddr: string
 }
 
-export const DeployLPSC = async (lpscconfig: lpscargs) => {
+export const DeployLPSC = async (lpscconfig: lpscargs , provider : any) => {
 
   const { particleProvider } = useAccountInfo();
 // @ts-ignore

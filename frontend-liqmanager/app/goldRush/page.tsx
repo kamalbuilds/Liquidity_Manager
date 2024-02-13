@@ -12,18 +12,16 @@ import { DeployLPSC } from "@/components/deploy/deploylpsc";
 import { useAccountInfo } from "@particle-network/connectkit";
 import { Input } from "@/components/ui/input";
 
+
 export default function GoldRushExample() {
     const [userEnteredAddress, setUserEnteredAddress] = React.useState('');
     const { account, particleProvider } = useAccountInfo();
 
     const func = async () => {
-        const ans = await DeployLPSC({ routeraddr: 'a', vaultaddr: 'b' });
+        const ans = await DeployLPSC({ routeraddr: 'a', vaultaddr: 'b' } , particleProvider);
         console.log("Ans", ans);
 
-        
     }
-
-
 
     console.log(account, particleProvider, "provider");
 
