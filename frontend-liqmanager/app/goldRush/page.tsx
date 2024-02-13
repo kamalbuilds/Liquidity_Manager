@@ -18,7 +18,7 @@ export default function GoldRushExample() {
     const { account, particleProvider } = useAccountInfo();
 
     const func = async () => {
-        const ans = await DeployLPSC({ routeraddr: 'a', vaultaddr: 'b' } , particleProvider);
+        const ans = await DeployLPSC({ routeraddr: '0xF694E193200268f9a4868e4Aa017A0118C9a8177', vaultaddr: '0x70A185DC70Be79c9717543CC48aB9AbCd8E84Bbf' } , particleProvider);
         console.log("Ans", ans);
 
     }

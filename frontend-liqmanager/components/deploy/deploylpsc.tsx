@@ -11,9 +11,9 @@ interface lpscargs {
 
 export const DeployLPSC = async (lpscconfig: lpscargs , provider : any) => {
 
-  const { particleProvider } = useAccountInfo();
+  // const { particleProvider } = useAccountInfo();
 // @ts-ignore
-  const ethersProvider = new ethers.providers.Web3Provider(particleProvider, "any");
+  const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
   // Prompt user to connect their wallet
   await ethersProvider.send("eth_requestAccounts", []);
@@ -21,7 +21,7 @@ export const DeployLPSC = async (lpscconfig: lpscargs , provider : any) => {
 
   // Create a factory for your contract
   const contractFactory = new ethers.ContractFactory(LPSC.abi, LPSC.bytecode, signer);
-
+  console.log(contractFactory,signer);
   // Deploy the contract with the required constructor arguments
   const contract = await contractFactory.deploy(
     lpscconfig.routeraddr,
