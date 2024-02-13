@@ -1,18 +1,18 @@
-'use client'
-import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import Autoplay from 'embla-carousel-autoplay'
-
-import { SiZendesk, SiGooglesheets, SiTypeform  } from 'react-icons/si'
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 const integrations = [
-    { name: 'ETH', logo: SiZendesk },
-    { name: 'Avalanche', logo: SiGooglesheets },
-    { name: 'Typeform', logo: SiTypeform },
-]
+    { name: 'ETH',logo: 'https://static.particle.network/token-list/ethereum/native.png', type: 'image' },
+    { name: 'Avalanche', logo: 'https://static.particle.network/token-list/avalanche/native.png', type: 'image' },
+    { name: 'Mumbai',  logo: 'https://static.particle.network/token-list/polygon/native.png', type: 'image' },
+    { name: 'AAVE' , logo : 'https://s2.coinmarketcap.com/static/img/coins/200x200/7278.png' , type : 'image' }
+];
 
 export function Integrations() {
+
+
     return (
         <div>
             <h2 className="text-lg font-bold mb-6">Connect with the Protocols of your choice</h2>
@@ -32,7 +32,13 @@ export function Integrations() {
                                 <div className="p-1">
                                     <Card>
                                         <CardContent className="flex flex-col items-center justify-center p-6 h-[150px]">
-                                            <int.logo className="text-5xl mb-4" />
+                                            {int.type === 'component' ? (
+                                                // @ts-expect-error
+                                                <int.logo className="text-5xl mb-4" />
+                                            ) : (
+                                                // @ts-ignore
+                                                <img src={int.logo} alt={int.name} className="h-20 mb-4" />
+                                            )}
                                             <h4 className="text-xl font-semibold text-center">{int.name}</h4>
                                         </CardContent>
                                     </Card>
@@ -50,5 +56,5 @@ export function Integrations() {
                 </p>
             </div>
         </div>
-    )
+    );
 }
