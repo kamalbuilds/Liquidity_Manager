@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AvalancheTestnet, Avalanche, } from '@particle-network/chains';
+import { AvalancheTestnet, Avalanche, EthereumSepolia , PolygonMumbai } from '@particle-network/chains';
 import { WalletEntryPosition } from "@particle-network/auth";
 import { evmWallets } from "@particle-network/connect";
 import { ModalProvider } from '@particle-network/connect-react-ui';
@@ -27,7 +27,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
     appId: process.env.NEXT_PUBLIC_APP_ID || "",
     chains: [
       Avalanche,
-      AvalancheTestnet
+      AvalancheTestnet,
+      EthereumSepolia,
+      PolygonMumbai
     ],
     particleWalletEntry: {    //optional: particle wallet config
       displayWalletEntry: true, //display wallet button when connect particle success.
@@ -35,6 +37,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       supportChains: [
         Avalanche,
         AvalancheTestnet,
+        EthereumSepolia,
+        PolygonMumbai
       ],
       customStyle: {}, //optional: custom wallet style
     },
@@ -49,7 +53,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
       showQrModal: false
     }),
   }
-
 
   return (
     <>
