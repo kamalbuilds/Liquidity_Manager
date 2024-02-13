@@ -11,7 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { AvalancheTestnet, Avalanche, } from '@particle-network/chains';
 import { WalletEntryPosition } from "@particle-network/auth";
 import { evmWallets } from "@particle-network/connect";
-import { ModalProvider } from '@particle-network/connectkit';
+import { ModalProvider } from '@particle-network/connect-react-ui';
 import { GoldRushProvider } from "@covalenthq/goldrush-kit";
 
 

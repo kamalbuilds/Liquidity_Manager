@@ -9,7 +9,7 @@ import { HeroSection } from "@/components/Hero/page";
 import { FeaturesSection } from "@/components/Features";
 // import { DeployMonitorAaveV3 } from "@/components/deploy/deploymonitoraavev3";
 import { DeployLPSC } from "@/components/deploy/deploylpsc";
-import { useAccountInfo, useConnectKit } from '@particle-network/connectkit';
+import { useAccountInfo, useConnectKit } from '@particle-network/connect-react-ui';
 
 export default function IndexPage() {
 

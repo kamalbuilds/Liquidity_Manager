@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 
 // Assuming MonitorAaveV3.json contains both ABI and bytecode
 import MonitorAaveV3 from '../../abi/MontitorAAVE.json';
-import { useAccountInfo } from '@particle-network/connectkit';
+import { useAccountInfo } from '@particle-network/connect-react-ui';
 
 interface MonitorArg {
   router: string;

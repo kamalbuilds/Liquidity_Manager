@@ -9,21 +9,22 @@ import {
     AddressActivityListView,
 } from "@covalenthq/goldrush-kit";
 import { DeployLPSC } from "@/components/deploy/deploylpsc";
-import { useAccountInfo } from "@particle-network/connectkit";
+import { useAccountInfo } from "@particle-network/connect-react-ui";
 import { Input } from "@/components/ui/input";
-
+import { useParticleProvider } from "@particle-network/connect-react-ui";
 
 export default function GoldRushExample() {
     const [userEnteredAddress, setUserEnteredAddress] = React.useState('');
     const { account, particleProvider } = useAccountInfo();
+    const a = useParticleProvider();
+
 
     const func = async () => {
-        const ans = await DeployLPSC({ routeraddr: '0xF694E193200268f9a4868e4Aa017A0118C9a8177', vaultaddr: '0x70A185DC70Be79c9717543CC48aB9AbCd8E84Bbf' } , particleProvider);
+        const ans = await DeployLPSC({ routeraddr: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59', vaultaddr: '0x70A185DC70Be79c9717543CC48aB9AbCd8E84Bbf' } , particleProvider);
         console.log("Ans", ans);
-
     }
 
-    console.log(account, particleProvider, "provider");
+    console.log(account, particleProvider,a, "provider");
 
     const handleAddressChange = (event : any) => {
         setUserEnteredAddress(event.target.value);
