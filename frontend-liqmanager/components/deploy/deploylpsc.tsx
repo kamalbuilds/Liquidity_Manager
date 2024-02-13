@@ -2,7 +2,6 @@
 import { ethers } from 'ethers';
 
 import LPSC from '../../abi/LPSC.json'; // The JSON file containing ABI and bytecode
-import { useAccountInfo } from '@particle-network/connectkit';
 
 interface lpscargs {
   routeraddr: string,
@@ -19,18 +18,17 @@ export const DeployLPSC = async (lpscconfig: lpscargs , provider : any) => {
   await ethersProvider.send("eth_requestAccounts", []);
   const signer = ethersProvider.getSigner();
 
+  console.log(signer,"signer");
+
   // Create a factory for your contract
   const contractFactory = new ethers.ContractFactory(LPSC.abi, LPSC.bytecode, signer);
-  console.log(contractFactory,signer);
+
   // Deploy the contract with the required constructor arguments
-  const contract = await contractFactory.deploy(
-    lpscconfig.routeraddr,
-    lpscconfig.vaultaddr
-  );
+  const lpsccontract = await contractFactory.deploy( lpscconfig.routeraddr , lpscconfig.vaultaddr);
 
-  await contract.deployed();
+  await lpsccontract.deployed();
 
-  console.log(`Contract deployed to: ${contract.address}`);
+  console.log(`Contract deployed to: ${lpsccontract.address}`);
 
-  return contract;
+  return lpsccontract;
 };
