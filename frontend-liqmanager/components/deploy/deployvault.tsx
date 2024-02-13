@@ -10,6 +10,7 @@ export const DeployVault = async ( provider : any) => {
 // @ts-ignore
   const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
+  console.log(ethersProvider,"ethers provider");
   // Prompt user to connect their wallet
   await ethersProvider.send("eth_requestAccounts", []);
   const signer = ethersProvider.getSigner();

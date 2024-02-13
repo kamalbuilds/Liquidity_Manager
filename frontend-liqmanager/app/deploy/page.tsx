@@ -8,11 +8,13 @@ import BarChart from "@/components/BarChart";
 import DebtPositionsCard, { DebtPositionsProps } from "@/components/DebtPostionsCard";
 import SideNavbar from "@/components/SideNavbar";
 import { Button } from "@/components/ui/button";
-import { useAccountInfo } from "@particle-network/connect-react-ui";
+import { useAccountInfo, useConnectId, useParticleProvider } from "@particle-network/connect-react-ui";
 import { DeployLPSC } from "@/components/deploy/deploylpsc";
 import { DeployVault } from "@/components/deploy/deployvault";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { ethers } from "ethers";
+import { networkConstants } from "../../constants";
 
 const uesrDebtPositionsData: DebtPositionsProps[] = [
   {
@@ -24,7 +26,31 @@ const uesrDebtPositionsData: DebtPositionsProps[] = [
 export default function Home() {
 
     const { account, particleProvider } = useAccountInfo();
+    const wallet = useParticleProvider();
     const [vaultaddr,setVaultaddr] = useState();
+    const[routeraddr,setRouteraddr] = useState('0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59');
+
+    console.log(particleProvider,"provider");
+
+    if(particleProvider){
+        //@ts-ignore
+        async function getchainname (){
+             //@ts-ignore
+            const ethersProvider = new ethers.providers.Web3Provider(particleProvider, "any");
+            console.log(ethersProvider, ethersProvider._network)
+            const chainName = await ethersProvider.getNetwork();
+            console.log(chainName);
+            //@ts-ignore
+            const chainInfo = networkConstants[chainName.name];
+            setRouteraddr(chainInfo.router)
+            console.log(chainInfo.chainSelector);
+            console.log(chainInfo.linkTokenAddress);
+            console.log(ethersProvider,"ethers provider");
+        }
+        getchainname();
+    }   
+
+
 
     const deployvault = async () => {
         const vault = await DeployVault(particleProvider);
@@ -32,13 +58,15 @@ export default function Home() {
     }
 
     const deploylpsc = async () => {
-        const ans = await DeployLPSC({ routeraddr: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59', vaultaddr: '0x70A185DC70Be79c9717543CC48aB9AbCd8E84Bbf' } , particleProvider);
+        const ans = await DeployLPSC({ routeraddr: routeraddr, vaultaddr: vaultaddr! } , particleProvider);
         console.log("Ans", ans);
     }
 
     const handleAddressChange = (event : any) => {
         setVaultaddr(event.target.value);
     };
+
+    console.log(wallet)
   return (
     <>
      <div className="flex">

@@ -13,7 +13,8 @@ import { WalletEntryPosition } from "@particle-network/auth";
 import { evmWallets } from "@particle-network/connect";
 import { ModalProvider } from '@particle-network/connect-react-ui';
 import { GoldRushProvider } from "@covalenthq/goldrush-kit";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <>
                   <div className="relative flex min-h-screen flex-col">
                     <SiteHeader />
+                    <ToastContainer />
                     <div className="flex-1">{children}</div>
                   </div>
                   <TailwindIndicator />
