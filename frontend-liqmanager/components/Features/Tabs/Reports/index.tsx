@@ -18,12 +18,24 @@ const data = [
     { month: 'Jul', total: 1200, positive: 1100 }
 ]
 
+interface IHistoricalData {
+    timestamp: string;
+    balance: number;
+}
+
+interface ITokenData {
+    token: string;
+    logo: string;
+    tokenSymbol: string;
+}
+
 
 export function Reports() {
     const { theme: mode } = useTheme()
-    const [portfolioItem, setPortfolioItem] = useState([]);
-    const [historicalData, setHistoricalData] = useState([]);
-    const [tokens, setTokens] = useState([]);
+    const [portfolioItem, setPortfolioItem] = useState<any>([]);
+    const [historicalData, setHistoricalData] = useState<IHistoricalData[]>([]);
+
+    const [tokens, setTokens] = useState<ITokenData[]>([]);
 
     const ApiServices = async () => {
         const client = new CovalentClient("cqt_rQdDRhX8FP9gX7jB9rhBgkY46Pxq");
@@ -42,69 +54,42 @@ export function Reports() {
         console.log("Items", items);
         setPortfolioItem(items);
 
-        items.map((item) => {
-            console.log("Item", item);
-            setTokens((prev) => [...prev, {
-                token: item.contract_name,
-                logo: item.logo_url,
-                tokenSymbol: item.contract_ticker_symbol
-            }])
-        })
+        const newTokens = items.map(item => ({
+            token: item.contract_name,
+            logo: item.logo_url,
+            tokenSymbol: item.contract_ticker_symbol
+        }));
+        setTokens(newTokens);
 
 
 
-        // const tokenItems = items[0];
-        // const { holdings } = tokenItems;
-
-        // holdings.map((holding) => {
-        //     console.log("Holding", holding);
-        //     const { timestamp } = holding;
-        //     const date = new Date(timestamp);
-        //     const ddMMyyyy = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-
-        //     setHistoricalData((prev) => [...prev, {
-        //         timestamp: ddMMyyyy,
-        //         balance: holding.open.quote,
-        //     }])
-
-        // })
 
     }
 
     console.log("portfolioItem", portfolioItem, tokens);
 
-    const filterItem = (tokenSelected?: any) => {
-        console.log("Token Selected", tokenSelected, portfolioItem);
-
+    const filterItem = (tokenSelected?: ITokenData) => {
         let selectedTokenData;
 
         if (!tokenSelected) {
             selectedTokenData = portfolioItem[0];
         } else {
-            selectedTokenData = portfolioItem.find((tokenItem) => {
-                return tokenItem.contract_name === tokenSelected.token;
-            })
+            selectedTokenData = portfolioItem.find((tokenItem: any) => tokenItem.contract_name === tokenSelected.token);
         }
-
-        console.log("TokenItem", selectedTokenData)
 
         if (selectedTokenData) {
-            const { holdings } = selectedTokenData;
-            holdings.map((holding) => {
-                console.log("Holding", holding);
-                const { timestamp } = holding;
-                const date = new Date(timestamp);
+            const { holdings }: any = selectedTokenData;
+            const newHistoricalData = holdings.map((holding: any) => {
+                const date = new Date(holding.timestamp);
                 const ddMMyyyy = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-
-                setHistoricalData((prev) => [...prev, {
+                return {
                     timestamp: ddMMyyyy,
                     balance: holding.open.quote,
-                }])
-
-            })
+                };
+            });
+            setHistoricalData(newHistoricalData); // Update historical data based on selected token
         }
-
-    }
+    };
 
     useEffect(() => {
 
