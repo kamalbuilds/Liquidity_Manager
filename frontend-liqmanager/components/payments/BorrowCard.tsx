@@ -32,8 +32,6 @@ const BorrowCard = ({ aaprovider , smartAccount  } : any) => {
     const [selectedToken, setSelectedToken] = useState<any>();
     const [address,setAddress ] = useState('0x869706f26A2F6353AeB49a7633d3f9F8345228E1');
 
-
-    console.log(smartAccount,"smaret acc");
     useEffect(() => {
         const fetchAddress = async () => {
             if (smartAccount) {

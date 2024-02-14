@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { InterestRate, Pool, PoolBundle } from "@aave/contract-helpers"
-import { AaveV3Ethereum, AaveV3Sepolia } from "@bgd-labs/aave-address-book"
+import {  AaveV3Sepolia , AaveV3Fuji } from "@bgd-labs/aave-address-book"
 import { useAccountInfo } from "@particle-network/connect-react-ui"
 import { ethers } from "ethers"
 import { toast } from "react-toastify"
@@ -30,7 +30,21 @@ import { Button, buttonVariants } from "../ui/button"
 const SupplyCard = ({ aaprovider , smartAccount  } : any) => {
 
   const [amount, setAmount] = useState<number>()
-  const [selectedToken, setSelectedToken] = useState<any>()
+  const [selectedToken, setSelectedToken] = useState<any>();
+  const [address,setAddress ] = useState('0x869706f26A2F6353AeB49a7633d3f9F8345228E1');
+
+  useEffect(() => {
+      const fetchAddress = async () => {
+          if (smartAccount) {
+              console.log("i am here")
+              const addr = await smartAccount?.getAddress();
+              console.log("i am chabnged",addr)
+              setAddress(addr);
+          }
+      };
+      fetchAddress();
+  }, [smartAccount]);
+
 console.log(aaprovider,"cusotom provider")
   const handleSupply = async () => {
     console.log("Input in func", amount, selectedToken)
@@ -50,18 +64,18 @@ console.log(aaprovider,"cusotom provider")
 
       try {
         const pool = new PoolBundle(aaprovider, {
-          POOL: AaveV3Ethereum.POOL,
+          POOL: AaveV3Fuji.POOL,
         })
 
         const s_amount = amount.toString();
 
         const supply = await pool.supplyTxBuilder.generateTxData({
-          user: aaprovider.account || "",
+          user: address || "",
           reserve: selectedToken.contractAddress, // dai address
           amount: ethers.utils
             .parseUnits(s_amount, selectedToken.decimal)
             .toString(),
-          onBehalfOf: aaprovider.account,
+          onBehalfOf: address,
         })
 
         console.log("Supply", supply)
@@ -119,7 +133,7 @@ console.log(aaprovider,"cusotom provider")
 
       const s_amount = amount?.toString()
       const data = contract.interface.encodeFunctionData("approve", [
-        AaveV3Ethereum.POOL,
+        AaveV3Fuji.POOL,
         ethers.utils.parseUnits(s_amount, selectedToken.decimal).toString(),
       ])
 
