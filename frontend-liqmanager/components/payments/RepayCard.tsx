@@ -24,7 +24,7 @@ import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 
-const RepayCard = (aaprovider : any, account: string,smartAccount: any) => {
+const RepayCard = (aaprovider : any, smartAccount: any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
@@ -51,10 +51,10 @@ const RepayCard = (aaprovider : any, account: string,smartAccount: any) => {
             });
             const s_amount = amount.toString();
             const repay = await pool.repayTxBuilder.generateTxData({
-                user: account || "",
+                user: aaprovider.account || "",
                 reserve: selectedToken.contractAddress,
                 amount: ethers.utils.parseUnits(s_amount, selectedToken.decimal).toString(),
-                onBehalfOf: account,
+                onBehalfOf: aaprovider.account,
                 interestRateMode: InterestRate.Variable,
             });
 

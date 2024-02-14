@@ -29,14 +29,12 @@ import { DeployVault } from "@/components/deploy/deployvault"
 import { networkConstants } from "../../constants"
 
 export default function Home() {
-  const { account, particleProvider } = useAccountInfo()
+  const { account, particleProvider } = useAccountInfo();
   const [vaultaddr, setVaultaddr] = useState()
   const [routeraddr, setRouteraddr] = useState(
     "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59"
   )
-  const [linkaddr, setLinkaddr] = useState()
-
-  console.log(linkaddr, "linkaddr")
+  const [linkaddr, setLinkaddr] = useState();
   const [formData, setFormData] = useState({
     router: "",
     onBehalfOf: "",

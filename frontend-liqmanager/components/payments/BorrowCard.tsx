@@ -26,13 +26,14 @@ import { toast } from 'react-toastify';
 import { useAccountInfo } from '@particle-network/connect-react-ui';
 
 
-const BorrowCard = (aaprovider : any , account: string,smartAccount: any) => {
+const BorrowCard = (aaprovider : any ,smartAccount: any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
 
     const handleBorrow = async () => {
 
+        console.log(aaprovider.account,"account")
         if (!amount) {
             toast.error("Please fill Amount");
             return;
@@ -44,21 +45,18 @@ const BorrowCard = (aaprovider : any , account: string,smartAccount: any) => {
 
         if (aaprovider) {
 
-            const signer = aaprovider?.getSigner();
-
             const pool = new PoolBundle(aaprovider, {
                 POOL: AaveV3Ethereum.POOL,
             });
 
             const s_amount = amount.toString();
             const borrowTx = pool.borrowTxBuilder.generateTxData({
-                user: account || "",
+                user: aaprovider.account || "",
                 reserve: selectedToken.contractAddress,
                 amount: parseUnits(s_amount, selectedToken.decimal).toString(),
                 interestRateMode: InterestRate.Variable,
             });
             console.log("Borrow Tx", borrowTx);
-
 
             const safeTransactionData = {
                 to: borrowTx.to,
@@ -66,12 +64,17 @@ const BorrowCard = (aaprovider : any , account: string,smartAccount: any) => {
                 data: borrowTx.data,
                 safeTxGas: borrowTx.gasLimit?.toString()
             }
-            
-            const txResponse = await signer.sendTransaction(safeTransactionData)
-            const txReceipt = await txResponse.wait()
 
-            toast.success(txReceipt.hash);
-            txReceipt ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+            
+            const userOpBundle = await smartAccount.buildUserOperation({ safeTransactionData }) 
+            const userOp = userOpBundle.userOp;  
+            const userOpHash = userOpBundle.userOpHash;
+
+            const txHash = await smartAccount.sendUserOperation({ userOp, userOpHash }); 
+            
+
+            toast.success(txHash);
+            txHash ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
         }
     };
 

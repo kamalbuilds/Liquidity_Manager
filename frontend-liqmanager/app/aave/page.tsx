@@ -193,9 +193,9 @@ setSmartAccount(smartAccount);
     <div className="flex flex-col gap-5  w-full p-4 my-16">
       <PageTitle title="AAVE Management" />
       <section className="grid grid-cols-1  gap-4 transition-all lg:grid-cols-2">
-        <SupplyCard aaprovider={customProvider} account={address} smartAccount={smartAccount} />
-        <BorrowCard aaprovider={customProvider} account={address} smartAccount={smartAccount} />
-        <RepayCard aaprovider={customProvider} account={address} smartAccount={smartAccount} />
+        <SupplyCard aaprovider={customProvider} smartAccount={smartAccount} />
+        <BorrowCard aaprovider={customProvider} smartAccount={smartAccount} />
+        <RepayCard aaprovider={customProvider} smartAccount={smartAccount} />
       </section>
     </div>
 </div>

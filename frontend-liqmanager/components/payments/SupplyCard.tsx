@@ -27,7 +27,7 @@ import {
 
 import { Button, buttonVariants } from "../ui/button"
 
-const SupplyCard = (aaprovider: any, account: string , smartAccount: any) => {
+const SupplyCard = (aaprovider: any, smartAccount: any) => {
 
   const [amount, setAmount] = useState<number>()
   const [selectedToken, setSelectedToken] = useState<any>()
@@ -56,12 +56,12 @@ console.log(aaprovider,"cusotom provider")
         const s_amount = amount.toString();
 
         const supply = await pool.supplyTxBuilder.generateTxData({
-          user: account || "",
+          user: aaprovider.account || "",
           reserve: selectedToken.contractAddress, // dai address
           amount: ethers.utils
             .parseUnits(s_amount, selectedToken.decimal)
             .toString(),
-          onBehalfOf: account,
+          onBehalfOf: aaprovider.account,
         })
 
         console.log("Supply", supply)
