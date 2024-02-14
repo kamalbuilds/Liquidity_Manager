@@ -7,7 +7,8 @@ const integrations = [
     { name: 'ETH',logo: 'https://static.particle.network/token-list/ethereum/native.png', type: 'image' },
     { name: 'Avalanche', logo: 'https://static.particle.network/token-list/avalanche/native.png', type: 'image' },
     { name: 'Mumbai',  logo: 'https://static.particle.network/token-list/polygon/native.png', type: 'image' },
-    { name: 'AAVE' , logo : 'https://s2.coinmarketcap.com/static/img/coins/200x200/7278.png' , type : 'image' }
+    { name: 'AAVE' , logo : 'https://s2.coinmarketcap.com/static/img/coins/200x200/7278.png' , type : 'image' },
+    { name: 'Compound' , logo : 'https://d392zik6ho62y0.cloudfront.net/images/compound-logo.png' , type : 'image' }
 ];
 
 export function Integrations() {

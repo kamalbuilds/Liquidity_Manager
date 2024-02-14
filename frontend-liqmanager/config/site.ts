@@ -8,12 +8,7 @@ export const siteConfig = {
     {
       title: "Dashboard",
       href: "/dashboard",
-    },
-    {
-      title: "Assets",
-      href: "/assetmanager",
-    },
-
+    }
   ],
   links: {
     twitter: "https://twitter.com/0xkamal7",
