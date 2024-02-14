@@ -26,15 +26,46 @@ import dynamic from "next/dynamic";
 import SupplyCard from "@/components/payments/SupplyCard";
 import BorrowCard from "@/components/payments/BorrowCard";
 import RepayCard from "@/components/payments/RepayCard";
-
+import { AAWrapProvider, SendTransactionMode, SmartAccount } from '@particle-network/aa';
 
 export default function Home() {
 
   const { particleProvider, account } = useAccountInfo();
   const [userDetails, setUserDetails] = useState<any>();
   const [aaveprotocol , setAaveprotocol] = useState<any>(AaveV3Fuji);
+  const [customProvider, setCustomProvider] = useState<any>();
+    const[address,setAddress] = useState<string>();
+    const[balance,setBalance] = useState<string>();
+
+  useEffect(() => {
+    if (particleProvider && account) {
+        // @ts-ignore
+      const smartAccount = new SmartAccount(particleProvider, {
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
+        clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY ||  "",
+        appId: process.env.NEXT_PUBLIC_APP_ID || "",
+        aaOptions: {
+          simple: [{ chainId: ChainId.fuji, version: '1.0.0' }] 
+        }
+      });
+
+      const wrappedProvider = new ethers.providers.Web3Provider(new AAWrapProvider(smartAccount, SendTransactionMode.Gasless), "any");
+      setCustomProvider(wrappedProvider);
+
+      const fetchBalance = async () => {
+        const address = await smartAccount.getAddress();
+        setAddress(address);
+        const balanceResponse = await customProvider.getBalance(address);
+        setBalance(ethers.utils.formatEther(balanceResponse));
+      };
+
+      fetchBalance();
+    }
+  }, [particleProvider, account]);
 
   const SideNavbarNoSSR = dynamic(() => import('../../components/SideNavbar'), { ssr: false });
+
+
 
   useEffect(() => {
     if (particleProvider && account) {
@@ -133,9 +164,9 @@ export default function Home() {
     <div className="flex flex-col gap-5  w-full p-4 my-16">
       <PageTitle title="AAVE Management" />
       <section className="grid grid-cols-1  gap-4 transition-all lg:grid-cols-2">
-        <SupplyCard />
-        <BorrowCard />
-        <RepayCard />
+        <SupplyCard aaprovider={customProvider} account={address}/>
+        <BorrowCard aaprovider={customProvider} account={address} />
+        <RepayCard aaprovider={customProvider} account={address} />
       </section>
     </div>
 </div>

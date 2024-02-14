@@ -28,7 +28,7 @@ const tabs = [
         header: 'Connect with the Protocols and Chains You Love'
     },
     {
-        name: 'Reports',
+        name: 'Insights',
         content: Reports,
         header: 'Get Realtime Insights'
     }

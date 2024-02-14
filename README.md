@@ -5,10 +5,19 @@
 ## Tagline
 Unlock the full potential of your assets with Liquidity Manager - Your gateway to efficient and optimized liquidity management in the DeFi space.
 
-![Screenshot 2024-02-19 153419](https://github.com/kamalbuilds/Liquidity_Manager/assets/95926324/f1010ccd-cdf8-42c5-87fd-fa96b94a1243)
+<p align="center">
+  <img src="https://github.com/kamalbuilds/Liquidity_Manager/assets/95926324/b0d6e79c-a8cb-4353-98e2-f86c55887ed5" alt="banner" />
+</p>
 
+![image](https://github.com/kamalbuilds/Liquidity_Manager/assets/95926324/707ad3ad-a67a-40a7-bba1-98e1541df9c4)
 
 ## Contracts 
+
+0x70A185DC70Be79c9717543CC48aB9AbCd8E84Bbf - Vault Contract on Source Chain (Sepolia)
+
+0xEe3288EEB0A60a3d9b63D735Ed5B12974e425838 - Liquidity Protection Contract on the Source Chain(Sepolia)
+
+0x301Ab38c7f652FA23C7Ba1fa182E36665Dac0fC2 - MonitorAAVEV3 Position on AVALANCHE FUJI C-CHAIN
 
 Chainlink Automation - https://automation.chain.link/fuji/30138675381868982937191746095730747527209720008427810930119313308116142995675
 

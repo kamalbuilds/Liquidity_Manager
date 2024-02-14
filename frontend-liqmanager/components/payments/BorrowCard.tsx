@@ -23,11 +23,10 @@ import { InterestRate, PoolBundle } from '@aave/contract-helpers';
 import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { parseUnits } from 'ethers/lib/utils';
 import { toast } from 'react-toastify';
+import { useAccountInfo } from '@particle-network/connect-react-ui';
 
 
-const BorrowCard = () => {
-
-    const { provider, safeSDKKit, selectedSafe } = useAuth();
+const BorrowCard = (aaprovider : any , account: string) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
@@ -43,17 +42,17 @@ const BorrowCard = () => {
             return;
         }
 
-        if (provider && safeSDKKit) {
+        if (aaprovider) {
 
-            const signer = provider?.getSigner();
+            const signer = aaprovider?.getSigner();
 
-            const pool = new PoolBundle(provider, {
+            const pool = new PoolBundle(aaprovider, {
                 POOL: AaveV3Ethereum.POOL,
             });
 
             const s_amount = amount.toString();
             const borrowTx = pool.borrowTxBuilder.generateTxData({
-                user: selectedSafe || "",
+                user: account || "",
                 reserve: selectedToken.contractAddress,
                 amount: parseUnits(s_amount, selectedToken.decimal).toString(),
                 interestRateMode: InterestRate.Variable,
@@ -67,18 +66,12 @@ const BorrowCard = () => {
                 data: borrowTx.data,
                 safeTxGas: borrowTx.gasLimit?.toString()
             }
-            // @ts-ignore
-            const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
-            console.log("safeTransaction", safeTransaction);
+            
+            const txResponse = await signer.sendTransaction(safeTransactionData)
+            const txReceipt = await txResponse.wait()
 
-            const tx = await safeSDKKit.signTransaction(safeTransaction);
-            console.log("tx", tx);
-
-            const txResult = await safeSDKKit.executeTransaction(tx);
-
-            console.log("txResult", txResult);
-            toast.success(txResult.hash);
-            txResult ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+            toast.success(txReceipt.hash);
+            txReceipt ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
         }
     };
 

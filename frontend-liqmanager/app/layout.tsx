@@ -71,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <>
                   <div className="relative flex min-h-screen flex-col">
                     <SiteHeader />
-                    <ToastContainer />
+                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
                     <div className="flex-1">{children}</div>
                   </div>
                   <TailwindIndicator />
