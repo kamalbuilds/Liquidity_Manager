@@ -65,7 +65,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             <GoldRushProvider apikey="cqt_rQdDRhX8FP9gX7jB9rhBgkY46Pxq">
               <ModalProvider options={particleAuthOptions}>
                 <>

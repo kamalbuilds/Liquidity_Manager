@@ -21,6 +21,10 @@ Unlock the full potential of your assets with Liquidity Manager - Your gateway t
 
 Chainlink Automation - https://automation.chain.link/fuji/30138675381868982937191746095730747527209720008427810930119313308116142995675
 
+Account Abstraction AAVE Transactions powered by Particle Auth 
+
+https://testnet.snowtrace.io/address/0x869706f26A2F6353AeB49a7633d3f9F8345228E1/tokentxns
+
 ## Features
 - **Multi-DEX Support**: Effortlessly manage your liquidity across various decentralized exchanges.
 - **Optimized Asset Allocation**: Utilize advanced algorithms to optimize your asset allocation for maximum returns.

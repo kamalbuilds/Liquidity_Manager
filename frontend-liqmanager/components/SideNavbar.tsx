@@ -33,9 +33,10 @@ export default function SideNavbar() {
           </Button>
         </div>
       )}
+
       {!isCollapsed && ( // Only render the Nav component when not collapsed
         <Nav
-          className="space-y-4"
+          className="space-y-16"
           // @ts-ignore
           links={[
             {
@@ -57,14 +58,14 @@ export default function SideNavbar() {
               variant: "ghost"
             },
             {
-              title: "AAVEV3",
+              title: "AAVEV3 Management",
               href: "/aave",
               icon: Settings,
               variant: "ghost"
             },
           ].map(link => ({
             ...link,
-            className: "flex items-center p-2 hover:bg-gray-100 rounded-md"
+            className: "flex items-center p-8 hover:bg-gray-100 rounded-md"
           }))}
         />
       )}

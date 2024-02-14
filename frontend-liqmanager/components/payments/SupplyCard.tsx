@@ -80,6 +80,9 @@ const SupplyCard = ({ aaprovider , smartAccount  } : any) => {
         })
 
         const s_amount = amount.toString();
+        console.log(ethers.utils
+            .parseUnits(s_amount, selectedToken.decimal)
+            .toString(),"amount");
 
         const supply = await pool.supplyTxBuilder.generateTxData({
           user: address || "",
@@ -128,9 +131,9 @@ const SupplyCard = ({ aaprovider , smartAccount  } : any) => {
     if (selectedToken) {
       const signer = aaprovider?.getSigner()
 
-      const tokenAddress = selectedToken.contractAddress
+
       const contract = new ethers.Contract(
-        tokenAddress,
+        tokenaddr!,
         ["function approve(address spender, uint256 amount)"],
         signer
       )
@@ -142,9 +145,8 @@ const SupplyCard = ({ aaprovider , smartAccount  } : any) => {
       ])
 
       const tx = {
-        to: tokenAddress,
+        to: tokenaddr,
         data: data,
-        value: ethers.utils.parseUnits("0", 18).toString(),
       }
 
       const txResponse = await signer.sendTransaction(tx)
