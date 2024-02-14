@@ -30,19 +30,31 @@ const BorrowCard = ({ aaprovider , smartAccount  } : any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
+    const [tokenaddr, setTokenaddr] = useState();
     const [address,setAddress ] = useState('0x869706f26A2F6353AeB49a7633d3f9F8345228E1');
 
     useEffect(() => {
         const fetchAddress = async () => {
             if (smartAccount) {
-                console.log("i am here")
                 const addr = await smartAccount?.getAddress();
-                console.log("i am chabnged",addr)
                 setAddress(addr);
             }
         };
+        const getAssets = async () => {
+            if (selectedToken) {
+                // @ts-ignore
+                const asset = AaveV3Fuji.ASSETS[selectedToken.name];
+                console.log(asset);
+                if (asset) {
+                    setTokenaddr(asset.UNDERLYING);
+                } else {
+                    console.log("Asset not found for", selectedToken.name);
+                }
+            }
+        };
         fetchAddress();
-    }, [smartAccount]);
+        getAssets();
+    }, [smartAccount,selectedToken]);
 
     const handleBorrow = async () => {
 
@@ -63,10 +75,15 @@ const BorrowCard = ({ aaprovider , smartAccount  } : any) => {
                 POOL: AaveV3Fuji.POOL,
             });
 
+
             const s_amount = amount.toString();
+            console.log(                address!,
+                tokenaddr,
+                    parseUnits(s_amount, selectedToken.decimal).toString(),
+                  InterestRate.Variable)
             const borrowTx = pool.borrowTxBuilder.generateTxData({
                 user: address!,
-                reserve: selectedToken.contractAddress,
+                reserve: tokenaddr!,
                 amount: parseUnits(s_amount, selectedToken.decimal).toString(),
                 interestRateMode: InterestRate.Variable,
             });
@@ -79,8 +96,13 @@ const BorrowCard = ({ aaprovider , smartAccount  } : any) => {
                 safeTxGas: borrowTx.gasLimit?.toString()
             }
 
+            const tx = {
+                to: safeTransactionData.to,
+                value: safeTransactionData.value,
+                data: safeTransactionData.data,
+            }
             
-            const userOpBundle = await smartAccount.buildUserOperation({ safeTransactionData }) 
+            const userOpBundle = await smartAccount.buildUserOperation({ tx }) 
             const userOp = userOpBundle.userOp;  
             const userOpHash = userOpBundle.userOpHash;
 
@@ -91,6 +113,8 @@ const BorrowCard = ({ aaprovider , smartAccount  } : any) => {
             txHash ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
         }
     };
+
+    console.log(AaveV3Fuji,"fuji")
 
     const handleSelect = (value: string) => {
         const selectedToken = BorrowTokenList.find(obj => obj.name === value);

@@ -32,20 +32,32 @@ const SupplyCard = ({ aaprovider , smartAccount  } : any) => {
   const [amount, setAmount] = useState<number>()
   const [selectedToken, setSelectedToken] = useState<any>();
   const [address,setAddress ] = useState('0x869706f26A2F6353AeB49a7633d3f9F8345228E1');
+  const [tokenaddr, setTokenaddr] = useState();
 
   useEffect(() => {
       const fetchAddress = async () => {
           if (smartAccount) {
-              console.log("i am here")
               const addr = await smartAccount?.getAddress();
-              console.log("i am chabnged",addr)
               setAddress(addr);
           }
       };
+      const getAssets = async () => {
+          if (selectedToken) {
+              // @ts-ignore
+              const asset = AaveV3Fuji.ASSETS[selectedToken.name];
+              console.log(asset);
+              if (asset) {
+                  setTokenaddr(asset.UNDERLYING);
+              } else {
+                  console.log("Asset not found for", selectedToken.name);
+              }
+          }
+      };
       fetchAddress();
-  }, [smartAccount]);
+      getAssets();
+  }, [smartAccount,selectedToken]);
 
-console.log(aaprovider,"cusotom provider")
+
   const handleSupply = async () => {
     console.log("Input in func", amount, selectedToken)
 
@@ -71,38 +83,30 @@ console.log(aaprovider,"cusotom provider")
 
         const supply = await pool.supplyTxBuilder.generateTxData({
           user: address || "",
-          reserve: selectedToken.contractAddress, // dai address
+          reserve: tokenaddr!,
           amount: ethers.utils
             .parseUnits(s_amount, selectedToken.decimal)
             .toString(),
           onBehalfOf: address,
         })
 
+        const tx = {
+            to: supply.to,
+            value: supply.value,
+            data: supply.data,
+        }
+
         console.log("Supply", supply)
 
-        const handleTransaction = async () => {
-          if (!aaprovider) return
+        const userOpBundle = await smartAccount.buildUserOperation({ tx }) 
+        const userOp = userOpBundle.userOp;  
+        const userOpHash = userOpBundle.userOpHash;
 
-          try {
-            const signer = aaprovider.getSigner()
-            // Example transaction
-            const tx = {
-                to: supply.to,
-                value: ethers.utils.parseUnits("0", 18).toString(), // ethers BigNumber
-                data: supply.data,
-            }
+        const txHash = await smartAccount.sendUserOperation({ userOp, userOpHash }); 
+        
 
-            const txResponse = await signer.sendTransaction(tx)
-            const txReceipt = await txResponse.wait()
+        toast.success(txHash);
 
-            toast.success(
-              `Transaction successful: ${txReceipt.transactionHash}`
-            )
-          } catch (error) {
-            console.error("Transaction Error:", error)
-            toast.error("Transaction failed.")
-          }
-        }
       } catch (error) {
         console.log("Error in supplying", error)
         toast.error("Cannot supply. Check console for more reason")

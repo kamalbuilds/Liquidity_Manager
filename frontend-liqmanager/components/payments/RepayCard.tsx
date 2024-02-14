@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Card,
     CardContent,
@@ -20,7 +20,7 @@ import { BorrowTokenList } from '@/config/asset';
 import { toast } from 'react-toastify';
 import { InterestRate, PoolBundle } from '@aave/contract-helpers';
 import { ethers } from 'ethers';
-import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { AaveV3Sepolia , AaveV3Fuji} from '@bgd-labs/aave-address-book';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 
@@ -28,6 +28,32 @@ const RepayCard = ({ aaprovider , smartAccount  } : any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
+    const [address,setAddress ] = useState('0x869706f26A2F6353AeB49a7633d3f9F8345228E1');
+    const [tokenaddr, setTokenaddr] = useState();
+  
+    useEffect(() => {
+        const fetchAddress = async () => {
+            if (smartAccount) {
+                const addr = await smartAccount?.getAddress();
+                setAddress(addr);
+            }
+        };
+        const getAssets = async () => {
+            if (selectedToken) {
+                // @ts-ignore
+                const asset = AaveV3Fuji.ASSETS[selectedToken.name];
+                console.log(asset);
+                if (asset) {
+                    setTokenaddr(asset.UNDERLYING);
+                } else {
+                    console.log("Asset not found for", selectedToken.name);
+                }
+            }
+        };
+        fetchAddress();
+        getAssets();
+    }, [smartAccount,selectedToken]);
+
     const handleSelect = (value: string) => {
         const selectedToken = BorrowTokenList.find(obj => obj.name === value);
         setSelectedToken(selectedToken);
@@ -47,35 +73,38 @@ const RepayCard = ({ aaprovider , smartAccount  } : any) => {
         if (aaprovider) {
 
             const pool = new PoolBundle(aaprovider, {
-                POOL: AaveV3Ethereum.POOL,
+                POOL: AaveV3Fuji.POOL,
             });
             const s_amount = amount.toString();
             const repay = await pool.repayTxBuilder.generateTxData({
-                user: aaprovider.account || "",
-                reserve: selectedToken.contractAddress,
+                user: address || "",
+                reserve: tokenaddr!,
                 amount: ethers.utils.parseUnits(s_amount, selectedToken.decimal).toString(),
-                onBehalfOf: aaprovider.account,
+                onBehalfOf: address,
                 interestRateMode: InterestRate.Variable,
             });
 
             console.log("repay", repay);
-            const signer = aaprovider.getSigner();
 
-            const transaction = {
+            const tx = {
                 to: repay.to,
-                value: ethers.utils.parseUnits("0", 18).toString(), // ethers BigNumber
+                value: repay.value,
                 data: repay.data,
-                safeTxGas: repay.gasLimit?.toString() || "0"
             }
+            
+            const userOpBundle = await smartAccount.buildUserOperation({ tx }) 
+            const userOp = userOpBundle.userOp;  
+            const userOpHash = userOpBundle.userOpHash;
 
-            const txResponse = await signer.sendTransaction(transaction);
-            const txReceipt = await txResponse.wait()
-
+            const txHash = await smartAccount.sendUserOperation({ userOp, userOpHash }); 
+            
             toast.success(
-              `Transaction successful: ${txReceipt.transactionHash}`
-            )
+                `Transaction successful`
+              )
+            toast.success(txHash);
 
-            txReceipt ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+
+            txHash ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
 
         }
     };
