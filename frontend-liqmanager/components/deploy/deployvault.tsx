@@ -1,7 +1,7 @@
 "use client";
 import { ethers } from 'ethers';
 
-import Vault from '../../abi/EnhancedMockVault.json'; // The JSON file containing ABI and bytecode
+import Vault from '../../abi/EnhancedVault.json'; // The JSON file containing ABI and bytecode
 
 
 export const DeployVault = async ( provider : any) => {
