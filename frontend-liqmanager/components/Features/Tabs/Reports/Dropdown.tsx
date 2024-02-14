@@ -7,10 +7,10 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-
+import { FaChevronDown } from "react-icons/fa";
 
 const Dropdown = ({
     tokens,
@@ -26,14 +26,13 @@ const Dropdown = ({
         filterItem(token);
     }
 
-    console.log("currentToken", currentToken)
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className='flex flex-row gap-2 '>
                 <Button variant={"outline"} className='gap-4'>
                     <Image src={currentToken.logo} height={20} width={20} alt={currentToken.token} />
                     {currentToken ? currentToken.token : 'Select Token'}
+                    <FaChevronDown />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

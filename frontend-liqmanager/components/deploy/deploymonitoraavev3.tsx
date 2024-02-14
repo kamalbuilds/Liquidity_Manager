@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 
 // Assuming MonitorAaveV3.json contains both ABI and bytecode
 import MonitorAaveV3 from '../../abi/MontitorAAVE.json';
-import { useAccountInfo } from '@particle-network/connect-react-ui';
 
 interface MonitorArg {
   router: string;
@@ -16,12 +15,11 @@ interface MonitorArg {
   sourceChainSelector: string;
 }
 
-export const DeployMonitorAaveV3 = async (args: MonitorArg) => {
+export const DeployMonitorAaveV3 = async (args: MonitorArg, provider : any) => {
 
 
-  const { particleProvider } = useAccountInfo();
 // @ts-ignore
-  const ethersProvider = new ethers.providers.Web3Provider(particleProvider, "any");
+  const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
 
   // Connect to the Ethereum network

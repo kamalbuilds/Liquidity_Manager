@@ -56,7 +56,7 @@ export function HeroSection() {
                                 Liquidity Positions
                             </span>
                         </h1>
-                        <p className="mx-auto max-w-[700px]md:text-xl">Across Multiple DeXes and Chains</p>
+                        <p className="mx-auto max-w-[700px]md:text-xl">Across Multiple Protocols and Chains</p>
                     </motion.div>
                     <motion.div
                         initial="hidden"
@@ -80,8 +80,8 @@ export function HeroSection() {
                                 <Button className="border" onClick={() => setShowForm(true)}>
                                     Join Waitlist
                                 </Button>
-                                <Link href="https://github.com/kamalbuilds/Liquidity_Manager">
-                                    <Button className="bg-secondary text-primary border-2">Learn More</Button>
+                                <Link href="/dashboard">
+                                    <Button className="bg-secondary text-primary border-2">Dashboard</Button>
                                 </Link>
                             </div>
                         )}
