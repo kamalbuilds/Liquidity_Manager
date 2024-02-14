@@ -24,7 +24,7 @@ import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 
-const RepayCard = (aaprovider : any, account: string) => {
+const RepayCard = (aaprovider : any, account: string,smartAccount: any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();

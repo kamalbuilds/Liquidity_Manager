@@ -27,11 +27,11 @@ import {
 
 import { Button, buttonVariants } from "../ui/button"
 
-const SupplyCard = (aaprovider: any, account: string) => {
+const SupplyCard = (aaprovider: any, account: string , smartAccount: any) => {
 
   const [amount, setAmount] = useState<number>()
   const [selectedToken, setSelectedToken] = useState<any>()
-
+console.log(aaprovider,"cusotom provider")
   const handleSupply = async () => {
     console.log("Input in func", amount, selectedToken)
 
@@ -45,7 +45,7 @@ const SupplyCard = (aaprovider: any, account: string) => {
     }
 
     if (aaprovider) {
-      const signer = aaprovider?.getSigner()
+      const signer = await aaprovider.getSigner();
       console.log("Signer", signer)
 
       try {

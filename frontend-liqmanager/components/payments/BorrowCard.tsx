@@ -26,7 +26,7 @@ import { toast } from 'react-toastify';
 import { useAccountInfo } from '@particle-network/connect-react-ui';
 
 
-const BorrowCard = (aaprovider : any , account: string) => {
+const BorrowCard = (aaprovider : any , account: string,smartAccount: any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();

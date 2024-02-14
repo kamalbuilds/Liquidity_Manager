@@ -27,6 +27,7 @@ import SupplyCard from "@/components/payments/SupplyCard";
 import BorrowCard from "@/components/payments/BorrowCard";
 import RepayCard from "@/components/payments/RepayCard";
 import { AAWrapProvider, SendTransactionMode, SmartAccount } from '@particle-network/aa';
+import { Avalanche , AvalancheTestnet } from '@particle-network/chains';
 
 export default function Home() {
 
@@ -36,6 +37,7 @@ export default function Home() {
   const [customProvider, setCustomProvider] = useState<any>();
     const[address,setAddress] = useState<string>();
     const[balance,setBalance] = useState<string>();
+    const [smartAccount , setSmartAccount] = useState<any>();
 
   useEffect(() => {
     if (particleProvider && account) {
@@ -45,10 +47,37 @@ export default function Home() {
         clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY ||  "",
         appId: process.env.NEXT_PUBLIC_APP_ID || "",
         aaOptions: {
-          simple: [{ chainId: ChainId.fuji, version: '1.0.0' }] 
-        }
+            accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE'
+                BICONOMY: [
+                    {
+                        version: '1.0.0',  
+                        chainIds: [AvalancheTestnet.id],
+                    },
+                    {  
+                        version: '2.0.0',
+                        chainIds: AvalancheTestnet.id,
+                    }
+                ],
+                CYBERCONNECT: [
+                    {
+                        version: '1.0.0',
+                        chainIds: AvalancheTestnet.id, 
+                    }
+                ],
+                SIMPLE: [
+                    {
+                        version: '1.0.0',
+                        chainIds: AvalancheTestnet.id,
+                    }
+                ],
+            },
+            paymasterApiKeys: [{ // Optional
+                chainId: 1,  
+                apiKey: 'Biconomy Paymaster API Key',
+            }]
+        }, 
       });
-
+setSmartAccount(smartAccount);
       const wrappedProvider = new ethers.providers.Web3Provider(new AAWrapProvider(smartAccount, SendTransactionMode.Gasless), "any");
       setCustomProvider(wrappedProvider);
 
@@ -164,9 +193,9 @@ export default function Home() {
     <div className="flex flex-col gap-5  w-full p-4 my-16">
       <PageTitle title="AAVE Management" />
       <section className="grid grid-cols-1  gap-4 transition-all lg:grid-cols-2">
-        <SupplyCard aaprovider={customProvider} account={address}/>
-        <BorrowCard aaprovider={customProvider} account={address} />
-        <RepayCard aaprovider={customProvider} account={address} />
+        <SupplyCard aaprovider={customProvider} account={address} smartAccount={smartAccount} />
+        <BorrowCard aaprovider={customProvider} account={address} smartAccount={smartAccount} />
+        <RepayCard aaprovider={customProvider} account={address} smartAccount={smartAccount} />
       </section>
     </div>
 </div>

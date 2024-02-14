@@ -2,7 +2,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Reports } from './Tabs/Reports'
-import { Integrations } from './Tabs/Integrations'
+import { Integrations } from './Tabs/Integrations';
+import  Working from "./Tabs/Working";
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 
@@ -31,6 +32,11 @@ const tabs = [
         name: 'Insights',
         content: Reports,
         header: 'Get Realtime Insights'
+    },
+    {
+        name: 'How it works',
+        content: Working,
+        header: 'How it works ??'
     }
 ]
 
