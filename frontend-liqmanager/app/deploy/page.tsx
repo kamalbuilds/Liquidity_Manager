@@ -67,7 +67,7 @@ export default function Home() {
     <>
      <div className="flex">
     <SideNavbarNoSSR />
-    <div className="flex flex-col gap-5  w-full p-4">
+    <div className="flex flex-col gap-5  w-full p-4 my-16">
       <PageTitle title="Deployments" />
       <section className="grid grid-cols-1  gap-4 transition-all lg:grid-cols-3">
       <CardContent>

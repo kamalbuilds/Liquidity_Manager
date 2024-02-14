@@ -12,7 +12,8 @@ export const siteConfig = {
     {
       title: "Assets",
       href: "/assetmanager",
-    }
+    },
+
   ],
   links: {
     twitter: "https://twitter.com/0xkamal7",
