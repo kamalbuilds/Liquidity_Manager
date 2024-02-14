@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Card,
     CardContent,
@@ -20,20 +20,36 @@ import { BorrowTokenList } from '@/config/asset';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import { InterestRate, PoolBundle } from '@aave/contract-helpers';
-import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { AaveV3Ethereum , AaveV3Fuji, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { parseUnits } from 'ethers/lib/utils';
 import { toast } from 'react-toastify';
 import { useAccountInfo } from '@particle-network/connect-react-ui';
 
 
-const BorrowCard = (aaprovider : any ,smartAccount: any) => {
+const BorrowCard = ({ aaprovider , smartAccount  } : any) => {
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
+    const [address,setAddress ] = useState('0x869706f26A2F6353AeB49a7633d3f9F8345228E1');
+
+
+    console.log(smartAccount,"smaret acc");
+    useEffect(() => {
+        const fetchAddress = async () => {
+            if (smartAccount) {
+                console.log("i am here")
+                const addr = await smartAccount?.getAddress();
+                console.log("i am chabnged",addr)
+                setAddress(addr);
+            }
+        };
+        fetchAddress();
+    }, [smartAccount]);
 
     const handleBorrow = async () => {
 
-        console.log(aaprovider.account,"account")
+        console.log("account",address);
+
         if (!amount) {
             toast.error("Please fill Amount");
             return;
@@ -46,12 +62,12 @@ const BorrowCard = (aaprovider : any ,smartAccount: any) => {
         if (aaprovider) {
 
             const pool = new PoolBundle(aaprovider, {
-                POOL: AaveV3Ethereum.POOL,
+                POOL: AaveV3Fuji.POOL,
             });
 
             const s_amount = amount.toString();
             const borrowTx = pool.borrowTxBuilder.generateTxData({
-                user: aaprovider.account || "",
+                user: address!,
                 reserve: selectedToken.contractAddress,
                 amount: parseUnits(s_amount, selectedToken.decimal).toString(),
                 interestRateMode: InterestRate.Variable,

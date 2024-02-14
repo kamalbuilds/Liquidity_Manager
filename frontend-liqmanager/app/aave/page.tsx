@@ -100,7 +100,7 @@ export default function Home() {
       setCustomProvider(wrappedProvider)
 
       const fetchBalance = async () => {
-        const address = await smartAccount.getAddress()
+        const address = await smartAccount.getAddress();
         setAddress(address);
         if(customProvider) {
           const balanceResponse = await customProvider.getBalance(address);
@@ -234,18 +234,26 @@ export default function Home() {
               </CardContent>
           )}
           <section className="grid grid-cols-1  gap-4 transition-all lg:grid-cols-2">
-            <SupplyCard
-              aaprovider={customProvider}
-              smartAccount={smartAccount}
-            />
-            <BorrowCard
-              aaprovider={customProvider}
-              smartAccount={smartAccount}
-            />
-            <RepayCard
-              aaprovider={customProvider}
-              smartAccount={smartAccount}
-            />
+          {
+              smartAccount ? (
+                <>
+                  <SupplyCard
+                    aaprovider={customProvider}
+                    smartAccount={smartAccount}
+                  />
+                  <BorrowCard
+                    aaprovider={customProvider}
+                    smartAccount={smartAccount}
+                  />
+                  <RepayCard
+                    aaprovider={customProvider}
+                    smartAccount={smartAccount}
+                  />
+                </>
+              ) : (
+                <div>Loading</div>
+              )
+            }
           </section>
         </div>
       </div>

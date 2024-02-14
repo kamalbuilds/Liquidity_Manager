@@ -27,7 +27,7 @@ import {
 
 import { Button, buttonVariants } from "../ui/button"
 
-const SupplyCard = (aaprovider: any, smartAccount: any) => {
+const SupplyCard = ({ aaprovider , smartAccount  } : any) => {
 
   const [amount, setAmount] = useState<number>()
   const [selectedToken, setSelectedToken] = useState<any>()
