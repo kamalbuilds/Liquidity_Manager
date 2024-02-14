@@ -11,7 +11,7 @@ export const siteConfig = {
     },
     {
       title: "Assets",
-      href: "/goldRush",
+      href: "/assetmanager",
     }
   ],
   links: {

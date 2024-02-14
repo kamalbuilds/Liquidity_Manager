@@ -1,9 +1,12 @@
 'use client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTheme } from 'next-themes'
-import { CSSProperties } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { DateRange } from './DateRange'
+import { CovalentClient } from "@covalenthq/client-sdk";
+import { Button } from '@/components/ui/button'
+import Dropdown from './Dropdown'
 
 const data = [
     { month: 'Jan', total: 900, positive: 880 },
@@ -15,107 +18,178 @@ const data = [
     { month: 'Jul', total: 1200, positive: 1100 }
 ]
 
+
 export function Reports() {
     const { theme: mode } = useTheme()
+    const [portfolioItem, setPortfolioItem] = useState([]);
+    const [historicalData, setHistoricalData] = useState([]);
+    const [tokens, setTokens] = useState([]);
+
+    const ApiServices = async () => {
+        const client = new CovalentClient("cqt_rQdDRhX8FP9gX7jB9rhBgkY46Pxq");
+        // const resp = await client.BalanceService.getHistoricalPortfolioForWalletAddress(
+        //     "avalanche-mainnet",
+        //     "0x3ABDCd346dB73bEB3e9BBE2cB336c91eec507a28"
+        // );
+
+        //TODO: Change the chain below to get the data
+        const resp = await client.BalanceService.getHistoricalPortfolioForWalletAddress("eth-mainnet", "0xE0df81bCd466D88bd86790Ead30cd5c34a17c929");
+
+        console.log("Response", resp);
+
+
+        const { items } = resp.data;
+        console.log("Items", items);
+        setPortfolioItem(items);
+
+        items.map((item) => {
+            console.log("Item", item);
+            setTokens((prev) => [...prev, {
+                token: item.contract_name,
+                logo: item.logo_url,
+                tokenSymbol: item.contract_ticker_symbol
+            }])
+        })
+
+
+
+        // const tokenItems = items[0];
+        // const { holdings } = tokenItems;
+
+        // holdings.map((holding) => {
+        //     console.log("Holding", holding);
+        //     const { timestamp } = holding;
+        //     const date = new Date(timestamp);
+        //     const ddMMyyyy = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+
+        //     setHistoricalData((prev) => [...prev, {
+        //         timestamp: ddMMyyyy,
+        //         balance: holding.open.quote,
+        //     }])
+
+        // })
+
+    }
+
+    console.log("portfolioItem", portfolioItem, tokens);
+
+    const filterItem = (tokenSelected?: any) => {
+        console.log("Token Selected", tokenSelected, portfolioItem);
+
+        let selectedTokenData;
+
+        if (!tokenSelected) {
+            selectedTokenData = portfolioItem[0];
+        } else {
+            selectedTokenData = portfolioItem.find((tokenItem) => {
+                return tokenItem.contract_name === tokenSelected.token;
+            })
+        }
+
+        console.log("TokenItem", selectedTokenData)
+
+        if (selectedTokenData) {
+            const { holdings } = selectedTokenData;
+            holdings.map((holding) => {
+                console.log("Holding", holding);
+                const { timestamp } = holding;
+                const date = new Date(timestamp);
+                const ddMMyyyy = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+
+                setHistoricalData((prev) => [...prev, {
+                    timestamp: ddMMyyyy,
+                    balance: holding.open.quote,
+                }])
+
+            })
+        }
+
+    }
+
+    useEffect(() => {
+
+        if (portfolioItem.length > 0) {
+            filterItem();
+        }
+
+    }, [portfolioItem])
+
+
+
+
+    console.log("historicalData", historicalData);
 
     return (
         <div>
+
             <div className="text-md font-semibold text-primary pb-4 -pt-2">
-                We analyses your Debt Postion in realtime to provide you with actionable insights.
-            </div>
-            <div className="max-w-4xl mx-auto mb-8 gap-4 flex flex-row md:grid grid-cols-2">
-                <Card className="p-6 shadow-lg">
-                    <h2 className="text-sm font-semibold text-primary">Average Health Position</h2>
-                    <CardContent className="-p-12">
-                        <p className="mt-2 text-3xl md:text-4xl font-bold text-green-600">88.6 %</p>
-                        <p className="mt-1 text-sm font-medium text-green-600">+0.05 %</p>
-                        <p className="mt-4 text-xs font-medium text-gray-500">180 New Data Points</p>
-                    </CardContent>
-                </Card>
-                <Card className="bg-secondary-foreground rounded-lg p-6 shadow-lg">
-                    <h2 className="text-sm font-semibold text-primary-foreground">Change in Sentiment</h2>
-                    <CardContent className="-p-12">
-                        <div className="mt-2 space-y-2 text-[10px] md:text-sm">
-                            <div className="flex flex-wrap items-center">
-                                <p className="font-medium text-green-600">+0.05%</p>
-                                <p className="ml-1 md:ml-[140px] font-medium text-secondary">vs. Prior Week</p>
-                            </div>
-                            <div className="flex flex-wrap items-center">
-                                <p className="font-medium text-red-600">-0.04%</p>
-                                <p className="ml-1 md:ml-36 font-medium text-secondary">vs. Prior Month</p>
-                            </div>
-                            <div className="flex flex-wrap items-center">
-                                <p className="font-medium text-green-600">+0.15%</p>
-                                <p className="ml-[0.2px] md:ml-[140px] font-medium text-secondary">vs. Prior Quarter</p>
-                            </div>
-                            <div className="flex flex-wrap items-center">
-                                <p className="font-medium text-green-600">+1.51%</p>
-                                <p className="ml-[0.01px] md:ml-[140px] font-medium text-secondary">vs. 6 Months Ago</p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                We analyses your Historical data in realtime to provide you with actionable insights. Get Your historical data based on different tokens that you hold
             </div>
 
-            <Card>
-                <CardHeader>
-                    <div className="flex flex-row justify-between">
-                        <CardTitle>Health Factor Over time</CardTitle>
-                        <DateRange className="hidden md:block" />
-                    </div>
-                </CardHeader>
-                <CardContent className="pb-4">
-                    <div className="h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <Tooltip
-                                    content={({ active, payload }) => {
-                                        if (active && payload && payload.length) {
-                                            return (
-                                                <div className="rounded-lg border bg-background p-2 shadow-sm">
-                                                    <div className="grid grid-cols-2 gap-2">
-                                                        <div className="flex flex-col">
-                                                            <span className="text-[0.70rem] uppercase text-muted-foreground">
-                                                                Total Comments
-                                                            </span>
-                                                            <span className="font-bold text-muted-foreground">
-                                                                {payload[0].value}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <span className="text-[0.70rem] uppercase text-muted-foreground">
-                                                                Average Sentiment
-                                                            </span>
-                                                            <span className="font-bold">{payload[1].value}</span>
+
+            {historicalData.length > 0 ? (
+                <Card>
+                    <CardHeader>
+                        <div className="flex flex-row justify-between">
+                            <CardTitle>Portfolio Data Over time</CardTitle>
+                            <div className='flex gap-2 items-center'>
+                                <Dropdown tokens={tokens} filterItem={filterItem} setHistoricalData={setHistoricalData} />
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="pb-4">
+                        <div className="h-[200px]">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={historicalData} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
+                                    <XAxis dataKey="timestamp" />
+                                    <YAxis />
+                                    <Tooltip
+                                        content={({ active, payload }: any) => {
+                                            if (active && payload && payload.length) {
+                                                return (
+                                                    <div className="rounded-lg border bg-background p-2 shadow-sm">
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            <div className="flex flex-col">
+                                                                <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                                                    Timestamp
+                                                                </span>
+                                                                <span className="font-bold text-muted-foreground">
+                                                                    {payload[0]?.payload.timestamp}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                                                    Balance
+                                                                </span>
+                                                                <span className="font-bold">${payload[0]?.value?.toFixed(2)}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            )
+                                                )
+                                            }
+                                            return null
+                                        }}
+                                    />
+                                    <Line
+                                        stroke="#8884d8"
+                                        type="monotone"
+                                        strokeWidth={2}
+                                        dataKey="balance"
+                                        activeDot={{
+                                            r: 8,
+                                            style: { fill: 'var(--theme-primary)', opacity: 0.25 }
+                                        }}
+                                        style={
+                                            {
+                                                stroke: 'var(--theme-primary)',
+                                                opacity: 0.25,
+                                                '--theme-primary': `hsl(${mode === 'dark' ? '0 0% 98%' : '240 5.9% 10%'})`
+                                            } as CSSProperties
                                         }
-                                        return null
-                                    }}
-                                />
-                                <Line
+                                    />
+                                    {/* <Line
                                     type="monotone"
-                                    strokeWidth={2}
-                                    dataKey="total"
-                                    activeDot={{
-                                        r: 6,
-                                        style: { fill: 'var(--theme-primary)', opacity: 0.25 }
-                                    }}
-                                    style={
-                                        {
-                                            stroke: 'var(--theme-primary)',
-                                            opacity: 0.25,
-                                            '--theme-primary': `hsl(${mode === 'dark' ? '0 0% 98%' : '240 5.9% 10%'})`
-                                        } as CSSProperties
-                                    }
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="positive"
+                                    dataKey="balance"
                                     strokeWidth={2}
                                     activeDot={{
                                         r: 8,
@@ -127,12 +201,17 @@ export function Reports() {
                                             '--theme-primary': `hsl(${mode === 'dark' ? '0 0% 98%' : '240 5.9% 10%'})`
                                         } as CSSProperties
                                     }
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </div>
-                </CardContent>
-            </Card>
+                                /> */}
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </CardContent>
+                </Card>
+            ) : (
+                <Button onClick={ApiServices}>Get Historical Data</Button>
+            )}
+
+
         </div>
     )
 }

@@ -42,10 +42,7 @@ export default function Home() {
             console.log(chainName);
             //@ts-ignore
             const chainInfo = networkConstants[chainName.name];
-            setRouteraddr(chainInfo.router)
-            console.log(chainInfo.chainSelector);
-            console.log(chainInfo.linkTokenAddress);
-            console.log(ethersProvider,"ethers provider");
+            setRouteraddr(chainInfo.router);
         }
         getchainname();
     }   

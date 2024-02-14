@@ -44,7 +44,7 @@ export default function SideNavbar({}: Props) {
         links={[
           {
             title: "Dashboard",
-            href: "/",
+            href: "/dashboard",
             icon: LayoutDashboard,
             variant: "default"
           },
@@ -56,7 +56,7 @@ export default function SideNavbar({}: Props) {
           },
           {
             title: "Asset Management",
-            href: "/assets",
+            href: "/assetmanager",
             icon: Settings,
             variant: "ghost"
           }
