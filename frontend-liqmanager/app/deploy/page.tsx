@@ -6,7 +6,6 @@ import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
 import Card, { CardContent, CardProps } from "@/components/Card";
 import BarChart from "@/components/BarChart";
 import DebtPositionsCard, { DebtPositionsProps } from "@/components/DebtPostionsCard";
-import SideNavbar from "@/components/SideNavbar";
 import { Button } from "@/components/ui/button";
 import { useAccountInfo, useConnectId, useParticleProvider } from "@particle-network/connect-react-ui";
 import { DeployLPSC } from "@/components/deploy/deploylpsc";
@@ -15,6 +14,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { ethers } from "ethers";
 import { networkConstants } from "../../constants";
+import dynamic from "next/dynamic";
 
 const uesrDebtPositionsData: DebtPositionsProps[] = [
   {
@@ -26,7 +26,6 @@ const uesrDebtPositionsData: DebtPositionsProps[] = [
 export default function Home() {
 
     const { account, particleProvider } = useAccountInfo();
-    const wallet = useParticleProvider();
     const [vaultaddr,setVaultaddr] = useState();
     const[routeraddr,setRouteraddr] = useState('0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59');
 
@@ -41,7 +40,7 @@ export default function Home() {
             const chainName = await ethersProvider.getNetwork();
             console.log(chainName);
             //@ts-ignore
-            const chainInfo = networkConstants[chainName.name];
+            const chainInfo = networkConstants[chainName.chainId];
             setRouteraddr(chainInfo.router);
         }
         getchainname();
@@ -63,11 +62,11 @@ export default function Home() {
         setVaultaddr(event.target.value);
     };
 
-    console.log(wallet)
+    const SideNavbarNoSSR = dynamic(() => import('../../components/SideNavbar'), { ssr: false });
   return (
     <>
      <div className="flex">
-    <SideNavbar />
+    <SideNavbarNoSSR />
     <div className="flex flex-col gap-5  w-full p-4">
       <PageTitle title="Deployments" />
       <section className="grid grid-cols-1  gap-4 transition-all lg:grid-cols-3">

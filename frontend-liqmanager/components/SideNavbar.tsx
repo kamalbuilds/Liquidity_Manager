@@ -1,7 +1,7 @@
 /** @format */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Nav } from "./ui/nav";
 
 type Props = {};
@@ -17,6 +17,7 @@ import { Button } from "./ui/button";
 import { useWindowWidth } from "@react-hook/window-size";
 
 export default function SideNavbar({}: Props) {
+  const [hasMounted, setHasMounted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const onlyWidth = useWindowWidth();
@@ -26,15 +27,15 @@ export default function SideNavbar({}: Props) {
     setIsCollapsed(!isCollapsed);
   }
 
+  useEffect(() => {
+    setHasMounted(true); // Component has mounted
+  }, []);
+
   return (
     <div className="relative min-w-[80px] border-r px-3  pb-10 pt-24 ">
-      {!mobileWidth && (
+       {hasMounted && !mobileWidth && (
         <div className="absolute right-[-20px] top-7">
-          <Button
-            onClick={toggleSidebar}
-            variant="secondary"
-            className=" rounded-full p-2"
-          >
+          <Button onClick={toggleSidebar} variant="secondary" className="rounded-full p-2">
             <ChevronRight />
           </Button>
         </div>

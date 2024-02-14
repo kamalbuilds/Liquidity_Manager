@@ -5,8 +5,6 @@ import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
 import Card, { CardContent, CardProps } from "@/components/Card";
 import BarChart from "@/components/BarChart";
 import DebtPositionsCard, { DebtPositionsProps } from "@/components/DebtPostionsCard";
-import SideNavbar from "@/components/SideNavbar";
-
 import { ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
@@ -24,6 +22,7 @@ import {
 import * as markets from '@bgd-labs/aave-address-book';
 import { formatReserves } from '@aave/math-utils';
 import { useAccountInfo } from "@particle-network/connect-react-ui";
+import dynamic from "next/dynamic";
 
 
 const cardData: CardProps[] = [
@@ -66,6 +65,8 @@ export default function Home() {
   const [userDetails, setUserDetails] = useState<any>();
   const [aaveprotocol , setAaveprotocol] = useState<any>(AaveV3Fuji);
 
+  const SideNavbarNoSSR = dynamic(() => import('../../components/SideNavbar'), { ssr: false });
+
   useEffect(() => {
     if (particleProvider && account) {
         // @ts-ignore
@@ -73,7 +74,6 @@ export default function Home() {
 
       (async () => {
         try {
-
           const chainName = await provider.getNetwork();
           const chainid = chainName.chainId;
           if(chainid == 11155111 ) {
@@ -133,7 +133,7 @@ export default function Home() {
         baseCurrencyData.marketReferenceCurrencyDecimals,
       marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     });
-    
+
     const userSummary = formatUserSummaryAndIncentives({
       currentTimestamp,
       marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
@@ -148,8 +148,6 @@ export default function Home() {
 
     console.log("userSummary", userSummary);
     setUserDetails(userSummary);
-
-
         } catch (error) {
           console.error("Failed to fetch contract data:", error);
           // Handle errors, e.g., show an error message to the user
@@ -162,7 +160,7 @@ export default function Home() {
   return (
     <>
      <div className="flex">
-    <SideNavbar />
+    <SideNavbarNoSSR />
     <div className="flex flex-col gap-5  w-full p-4">
       <PageTitle title="Dashboard" />
       <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 xl:grid-cols-4">

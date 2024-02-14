@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-import "@covalenthq/goldrush-kit/styles.css";
 import {
     GoldRushProvider,
     NFTWalletTokenListView,
@@ -9,8 +8,8 @@ import {
     AddressActivityListView,
 } from "@covalenthq/goldrush-kit";
 import { useAccountInfo } from "@particle-network/connect-react-ui";
-import { Input } from "@/components/ui/input"; // Assume this is a custom input styled with TailwindCSS
-import SideNavbar from "@/components/SideNavbar";
+import { Input } from "@/components/ui/input";
+import dynamic from "next/dynamic";
 
 export default function GoldRushExample() {
     const [userEnteredAddress, setUserEnteredAddress] = React.useState('');
@@ -21,10 +20,10 @@ export default function GoldRushExample() {
     };
 
     const effectiveAddress = userEnteredAddress || account;
-
+    const SideNavbarNoSSR = dynamic(() => import('../../components/SideNavbar'), { ssr: false });
     return (
         <div className="flex h-full">
-            <SideNavbar />
+            <SideNavbarNoSSR />
             <div className="flex flex-col gap-4 p-4 w-full">
                 <div className="p-4">
                     <Input
