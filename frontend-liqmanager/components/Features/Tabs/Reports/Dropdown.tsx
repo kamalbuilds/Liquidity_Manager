@@ -38,7 +38,7 @@ const Dropdown = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent>
 
-                {tokens.map((token) => {
+                {tokens.map((token : any) => {
                     console.log("TOken", token);
                     return (
                         <DropdownMenuItem onClick={() => handleSelectToken(token)} className='flex flex-row gap-2'>
