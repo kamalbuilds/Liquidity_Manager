@@ -78,7 +78,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {/* <ThirdwebProvider clientId={process.env.NEXT_PUBLIC_APP_TEMPLATE_CLIENT_ID} activeChain="mumbai"> */}
             <ModalProvider options={particleAuthOptions}>
               <>
                 <div className="relative flex min-h-screen flex-col">
@@ -88,7 +87,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <TailwindIndicator />
               </>
             </ModalProvider>
-            {/* </ThirdwebProvider> */}
           </ThemeProvider>
         </body>
       </html>
