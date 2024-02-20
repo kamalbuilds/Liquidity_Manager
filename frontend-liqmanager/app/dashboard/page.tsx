@@ -178,7 +178,7 @@ export default function Home() {
     console.log("Account and chain name", chainName, account, chainid);
 
     try {
-
+      //@ts-ignore
       const resp = await client.XykService.getPoolsForWalletAddress(chainid, account as string, 0);
       console.log("Response", resp);
 
